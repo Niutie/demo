@@ -95,6 +95,15 @@ public class DemoApplicationTests {
         userService.delete("3");
     }
 
+    @Test
+    public  void testTransaction(){
+        User user = new User();
+        user.setId("6");
+        user.setName("孟十一");
+        user.setAge("31");
+        userService.save(user);
+    }
+
 }
 
 
