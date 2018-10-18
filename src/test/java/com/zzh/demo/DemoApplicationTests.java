@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -102,6 +104,20 @@ public class DemoApplicationTests {
         user.setName("孟十一");
         user.setAge("31");
         userService.save(user);
+    }
+
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Test
+    public void testRedis(){
+        redisTemplate.opsForValue().set("name","zzh");
+        String name = (String)redisTemplate.opsForValue().get("name");
+        System.out.println(name);
+        redisTemplate.delete("name");
     }
 
 }
