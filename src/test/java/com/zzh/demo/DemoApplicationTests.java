@@ -114,10 +114,18 @@ public class DemoApplicationTests {
 
     @Test
     public void testRedis(){
+        //增
         redisTemplate.opsForValue().set("name","zzh");
         String name = (String)redisTemplate.opsForValue().get("name");
         System.out.println(name);
+        //删
         redisTemplate.delete("name");
+        //改
+        stringRedisTemplate.opsForValue().set("name","allen");
+        //查
+        name = stringRedisTemplate.opsForValue().get("name");
+        System.out.println(name);
+        stringRedisTemplate.delete("name");
     }
 
 }
