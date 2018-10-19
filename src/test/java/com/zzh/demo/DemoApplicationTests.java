@@ -142,7 +142,7 @@ public class DemoApplicationTests {
         System.out.println("目前缓存中的用户数量为：" + redisUserSize);
         System.out.println("--->>> id: " + user1.getId() + " name:" + user1.getName());
         //查询id = 4 的数据，不存在于redis缓存中，存在于数据库中，所以会把数据库查询的数据更新到缓存中
-        User user3 = userService.findById("4");
+        User user3 = userService.findById("7");
         System.out.println("--->>> id: " + user3.getId() + " name:" + user3.getName());
         redisUserSize = redisTemplate.opsForList().size("ALL_USER_LIST");
         System.out.println("目前缓存中的用户数量为：" + redisUserSize);
