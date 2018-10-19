@@ -2,6 +2,8 @@ package com.zzh.demo;
 
 import com.zzh.demo.Entity.User;
 import com.zzh.demo.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +31,8 @@ public class DemoApplicationTests {
     //@Autowired
     @Resource
     private JdbcTemplate jdbcTemplate;
+
+    Logger logger = LogManager.getLogger(this.getClass());
 
     @Test
     public void contextLoads() {
@@ -148,6 +152,11 @@ public class DemoApplicationTests {
         System.out.println("目前缓存中的用户数量为：" + redisUserSize);
     }
 
+    @Test
+    public void testLog4j(){
+        userService.delete("7");
+        logger.info("delete success!");
+    }
 }
 
 

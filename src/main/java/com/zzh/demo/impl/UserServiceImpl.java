@@ -3,6 +3,8 @@ package com.zzh.demo.impl;
 import com.zzh.demo.Entity.User;
 import com.zzh.demo.repository.UserRepository;
 import com.zzh.demo.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private RedisTemplate redisTemplate;
 
     private static final String ALL_USER = "ALL_USER_LIST";
+
+    Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     public User findById(String id) {
@@ -62,6 +66,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String id) {
         userRepository.deleteById(id);
+        logger.info("userId: " + id + "用户被删除");
     }
 
     @Override
