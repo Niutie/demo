@@ -128,6 +128,26 @@ public class DemoApplicationTests {
         stringRedisTemplate.delete("name");
     }
 
+    @Test
+    public void testFindById(){
+        Long redisUserSize = 0L;
+        //查询id = 1 的数据，该数据存在于redis缓存中
+        User user = userService.findById("1");
+        redisUserSize = redisTemplate.opsForList().size("ALL_USER_LIST");
+        System.out.println("目前缓存中的用户数量为：" + redisUserSize);
+        System.out.println("--->>> id: " + user.getId() + " name:" + user.getName());
+        //查询id = 2 的数据，该数据存在于redis缓存中
+        User user1 = userService.findById("2");
+        redisUserSize = redisTemplate.opsForList().size("ALL_USER_LIST");
+        System.out.println("目前缓存中的用户数量为：" + redisUserSize);
+        System.out.println("--->>> id: " + user1.getId() + " name:" + user1.getName());
+        //查询id = 4 的数据，不存在于redis缓存中，存在于数据库中，所以会把数据库查询的数据更新到缓存中
+        User user3 = userService.findById("4");
+        System.out.println("--->>> id: " + user3.getId() + " name:" + user3.getName());
+        redisUserSize = redisTemplate.opsForList().size("ALL_USER_LIST");
+        System.out.println("目前缓存中的用户数量为：" + redisUserSize);
+    }
+
 }
 
 

@@ -5,6 +5,7 @@ import com.zzh.demo.repository.UserRepository;
 import com.zzh.demo.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +20,29 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    private static final String ALL_USER = "ALL_USER_LIST";
+
     @Override
     public User findById(String id) {
-        return userRepository.findById(id).get();
+        //return userRepository.findById(id).get();
+        //step 1: 查询缓存中的数据
+        List<User> userList = redisTemplate.opsForList().range(ALL_USER, 0, -1);
+        if (userList != null && userList.size() > 0){
+            for(User user : userList){
+                if (user.getId().equals(id)){
+                    return user;
+                }
+            }
+        }
+        //step 2：查询数据库中的数据
+        User user = userRepository.findById(id).get();
+        if (user != null){
+            redisTemplate.opsForList().leftPush(ALL_USER, user);
+        }
+        return user;
     }
 
     @Override
