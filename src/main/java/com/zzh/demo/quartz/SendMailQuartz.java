@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 public class SendMailQuartz {
 
-    private  static final Logger logger = LogManager.getLogger(SendMailQuartz.class);
+    private static final Logger logger = LogManager.getLogger(SendMailQuartz.class);
 
+    @Scheduled(cron = "*/3 * * * * *")
+    public void reportCurrentByCron(){
+        logger.info("定时器开始运行！");
+    }
 }
