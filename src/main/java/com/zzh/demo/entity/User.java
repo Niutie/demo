@@ -1,4 +1,4 @@
-package com.zzh.demo.Entity;
+package com.zzh.demo.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

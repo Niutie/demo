@@ -1,6 +1,6 @@
 package com.zzh.demo.repository;
 
-import com.zzh.demo.Entity.User;
+import com.zzh.demo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

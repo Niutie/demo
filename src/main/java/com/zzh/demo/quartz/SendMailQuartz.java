@@ -1,6 +1,6 @@
 package com.zzh.demo.quartz;
 
-import com.zzh.demo.Entity.User;
+import com.zzh.demo.entity.User;
 import com.zzh.demo.mail.SendJunkMailService;
 import com.zzh.demo.service.UserService;
 import org.apache.logging.log4j.LogManager;

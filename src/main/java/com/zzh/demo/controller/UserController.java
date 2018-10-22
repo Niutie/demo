@@ -1,6 +1,6 @@
 package com.zzh.demo.controller;
 
-import com.zzh.demo.Entity.User;
+import com.zzh.demo.entity.User;
 import com.zzh.demo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

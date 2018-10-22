@@ -1,6 +1,6 @@
 package com.zzh.demo;
 
-import com.zzh.demo.Entity.User;
+import com.zzh.demo.entity.User;
 import com.zzh.demo.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -156,6 +156,12 @@ public class DemoApplicationTests {
     public void testLog4j(){
         userService.delete("7");
         logger.info("delete success!");
+    }
+
+    @Test
+    public void testMybatis(){
+        User user = userService.findByNameAndAge("李四", "22");
+        logger.info(user.getId() + user.getName());
     }
 }
 

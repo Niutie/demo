@@ -1,6 +1,7 @@
 package com.zzh.demo.impl;
 
-import com.zzh.demo.Entity.User;
+import com.zzh.demo.entity.User;
+import com.zzh.demo.dao.UserDao;
 import com.zzh.demo.repository.UserRepository;
 import com.zzh.demo.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -89,5 +90,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByIdIn(ids);
     }
 
+    @Resource
+    private UserDao userDao;
+
+    @Override
+    public User findByNameAndAge(String name, String age) {
+        return userDao.findByNameAndAge(name, age);
+    }
 
 }
