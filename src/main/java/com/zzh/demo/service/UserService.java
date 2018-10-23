@@ -6,10 +6,12 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public interface UserService {
     User findById(String id);
     List<User> findAll();
+    Future<List<User>> findAsynAll();
     User save(User user);
     void delete(String id);
     Page<User> findAll(Pageable pageable);

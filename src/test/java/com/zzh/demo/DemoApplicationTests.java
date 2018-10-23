@@ -1,7 +1,11 @@
 package com.zzh.demo;
 
+import com.zzh.demo.entity.Mood;
 import com.zzh.demo.entity.User;
+import com.zzh.demo.impl.MoodProducer;
+import com.zzh.demo.service.MoodService;
 import com.zzh.demo.service.UserService;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -17,11 +21,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import javax.jms.Destination;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 
 @RunWith(SpringRunner.class)
@@ -162,6 +169,74 @@ public class DemoApplicationTests {
     public void testMybatis(){
         User user = userService.findByNameAndAge("李四", "22");
         logger.info(user.getId() + user.getName());
+    }
+
+    @Resource
+    private MoodService moodService;
+
+    @Test
+    public void testMood(){
+        Mood mood = new Mood();
+        mood.setId("1");
+        mood.setUserId("1");
+        mood.setPraiseNum(0);
+        mood.setContent("This is the first message!");
+        mood.setPublishTime(new Date());
+        Mood moodSave = moodService.save(mood);
+    }
+
+    @Resource
+    private MoodProducer moodProducer;
+
+    @Test
+    public void testActiveMQ(){
+        Destination destination = new ActiveMQQueue("test.q");
+        moodProducer.sendMessage(destination, "Hello, MQ!");
+    }
+
+    @Test
+    public void testActiveMQAsynSave(){
+        Mood mood = new Mood();
+        mood.setId("2");
+        mood.setUserId("2");
+        mood.setPraiseNum(0);
+        mood.setContent("This is the second message!");
+        mood.setPublishTime(new Date());
+        String msg = moodService.asynSave(mood);
+        System.out.println("异步发布信息： " + msg);
+    }
+
+    @Test
+    public void testAsync(){
+        long startTime = System.currentTimeMillis();
+        System.out.println("第一次查询所有用户！");
+        List<User> userList1 = userService.findAll();
+        System.out.println("第二次查询所有用户！");
+        List<User> userList2 = userService.findAll();
+        System.out.println("第三次查询所有用户！");
+        List<User> userList3 = userService.findAll();
+        long endTime = System.currentTimeMillis();
+        System.out.println("总共耗时： " + (endTime - startTime) + " 毫秒！");
+    }
+
+    @Test
+    public void testAsync2() throws Exception {
+        long startTime = System.currentTimeMillis();
+        System.out.println("第一次查询所有用户！");
+        Future<List<User>> userList1 = userService.findAsynAll();
+        System.out.println("第二次查询所有用户！");
+        Future<List<User>> userList2 = userService.findAsynAll();
+        System.out.println("第三次查询所有用户！");
+        Future<List<User>> userList3 = userService.findAsynAll();
+        while (true){
+            if (userList1.isDone() && userList2.isDone() && userList3.isDone()){
+                break;
+            }else {
+                Thread.sleep(10);
+            }
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("总共耗时： " + (endTime - startTime) + " 毫秒！");
     }
 }
 
