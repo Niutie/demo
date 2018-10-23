@@ -1,4 +1,4 @@
-package com.zzh.demo.mail.impl;
+package com.zzh.demo.impl;
 
 import com.zzh.demo.entity.User;
 import com.zzh.demo.mail.SendJunkMailService;

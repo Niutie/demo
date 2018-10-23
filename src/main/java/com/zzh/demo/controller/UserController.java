@@ -1,6 +1,7 @@
 package com.zzh.demo.controller;
 
 import com.zzh.demo.entity.User;
+import com.zzh.demo.error.BusinessException;
 import com.zzh.demo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,5 +22,12 @@ public class UserController {
         List<User> user = userService.findAll();
         model.addAttribute("users", user);
         return "user";
+    }
+
+    @RequestMapping("/findAll")
+    public String findAll(Model model){
+        List<User> user = userService.findAll();
+        model.addAttribute("users", user);
+        throw new BusinessException("业务异常");
     }
 }
