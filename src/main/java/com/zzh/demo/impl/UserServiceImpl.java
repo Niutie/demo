@@ -2,6 +2,7 @@ package com.zzh.demo.impl;
 
 import com.zzh.demo.entity.User;
 import com.zzh.demo.dao.UserDao;
+import com.zzh.demo.error.BusinessException;
 import com.zzh.demo.repository.UserRepository;
 import com.zzh.demo.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -126,6 +129,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByNameAndAge(String name, String age) {
         return userDao.findByNameAndAge(name, age);
+    }
+
+    @Override
+    @Retryable(value = {BusinessException.class}, maxAttempts = 5, backoff = @Backoff(delay = 5000, multiplier = 2))
+    public User findByNameAndAgeRetry(String name, String age) {
+        System.out.println("[findByNameAndAgeRetry] 方法失败重试了！");
+        throw new BusinessException();
     }
 
 }

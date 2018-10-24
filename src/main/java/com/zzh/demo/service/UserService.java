@@ -20,4 +20,5 @@ public interface UserService {
     List<User> findByIdIn(Collection<String> ids);
 
     User findByNameAndAge(String name, String age);
+    User findByNameAndAgeRetry(String name, String age);
 }

@@ -30,4 +30,11 @@ public class UserController {
         model.addAttribute("users", user);
         throw new BusinessException("业务异常");
     }
+
+    @RequestMapping("/findByNameAndAgeRetry")
+    public String findByNameAndAgeRetry(Model model){
+        User user = userService.findByNameAndAgeRetry("朱八", "27");
+        model.addAttribute("users", user);
+        return "success";
+    }
 }
