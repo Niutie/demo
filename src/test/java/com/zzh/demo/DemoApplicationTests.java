@@ -111,9 +111,10 @@ public class DemoApplicationTests {
     @Test
     public  void testTransaction(){
         User user = new User();
-        user.setId("6");
-        user.setName("孟十一");
+        user.setId("7");
+        user.setName("钱十");
         user.setAge("31");
+        user.setPassword("147258");
         userService.save(user);
     }
 
